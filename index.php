@@ -13,10 +13,12 @@ $povolene_stranky = [
     'lipy'      => 'lipy.php',
     'arnika'    => 'arnika.php',
     'rr'        => 'rr.php',
-    'procleny'  => 'procleny.php',
     'dokumenty' => 'dokumenty.php',
     'tabor'     => 'tabor.php',
     'historie'  => 'historie.php',
+    'procleny'  => 'procleny.php',
+    'infolipy'   => 'infolipy.php',
+    'infoarnika' => 'infoarnika.php',
 ];
 
 // Dvojtá kontrola existence

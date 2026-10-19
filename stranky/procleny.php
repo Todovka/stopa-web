@@ -183,7 +183,7 @@
 </section>
 
 <section class="tlacitka_procleny">
-    <a href="index.php?stranka=infolipy"><button class="procleny-tlacitko">Informace - Lípy</button></a>
-    <a href="index.php?stranka=infoarnika"><button class="procleny-tlacitko">Informace - Arnika</button></a>
+    <a href="index.php?stranka=infolipy"><button class="procleny-tlacitko procleny-tlacitko-lipy">Informace - Lípy</button></a>
+    <a href="index.php?stranka=infoarnika"><button class="procleny-tlacitko procleny-tlacitko-arnika">Informace - Arnika</button></a>
 </section>
 </section>

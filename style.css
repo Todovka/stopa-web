@@ -876,6 +876,85 @@ footer {
     animation: maintrance-shake 0.4s ease;
 }
 
+/* ========== NOVÁ TLAČÍTKA PRO PODSTRÁNKY (LÍPY / ARNIKA / PRO ČLENY) ========== */
+
+.tlacitka_procleny {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin: 40px auto;
+    text-align: center;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.tlacitka_procleny a {
+    text-decoration: none;
+    display: inline-block;
+}
+
+.procleny-tlacitko {
+    font-family: "Skaut BOLD", sans-serif;
+    font-size: 1.15rem;
+    padding: 14px 32px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.procleny-tlacitko:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+    filter: brightness(1.08);
+}
+
+.procleny-tlacitko:active {
+    transform: translateY(0);
+}
+
+/* Lípy zelené jako má classa z-lip (#689C40) */
+.procleny-tlacitko-lipy,
+.tlacitka_procleny a[href*="infolipy"] .procleny-tlacitko,
+.tlacitka_procleny a[href*="stranka=lipy"] .procleny-tlacitko {
+    background-color: #689C40;
+    color: #ffffff;
+}
+
+/* Arnika hnědé jako má classa z-arniky (#bba782) */
+.procleny-tlacitko-arnika,
+.tlacitka_procleny a[href*="infoarnika"] .procleny-tlacitko,
+.tlacitka_procleny a[href*="stranka=arnika"] .procleny-tlacitko {
+    background-color: #bba782;
+    color: #ffffff;
+}
+
+/* Administrace - akcenty pro Lípy a Arniku */
+.maintrance-checkbox-lipy input[type="checkbox"]:checked ~ .maintrance-checkbox-custom {
+    background-color: #689C40;
+    border-color: #689C40;
+}
+
+.maintrance-checkbox-arnika input[type="checkbox"]:checked ~ .maintrance-checkbox-custom {
+    background-color: #bba782;
+    border-color: #bba782;
+}
+
+.maintrance-toggle-slider-lipy input:checked + .maintrance-toggle-slider {
+    background-color: #689C40;
+}
+
+.maintrance-toggle-slider-arnika input:checked + .maintrance-toggle-slider {
+    background-color: #bba782;
+}
+
 @media (max-width: 900px) {
     .maintrance-container {
         width: 92%;

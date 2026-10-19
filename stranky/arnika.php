@@ -30,3 +30,6 @@
         <p>+420 777 123 456</p>
     </div>
 </section>
+<section class="tlacitka_procleny">
+    <a href="index.php?stranka=infoarnika"><button class="procleny-tlacitko procleny-tlacitko-arnika">Informace - Arnika</button></a>
+</section>

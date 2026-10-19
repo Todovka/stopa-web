@@ -31,3 +31,6 @@
         <p>+420 777 123 456</p>
     </div> 
 </section>
+<section class="tlacitka_procleny">
+    <a href="index.php?stranka=infolipy"><button class="procleny-tlacitko procleny-tlacitko-lipy">Informace - Lípy</button></a>
+</section>

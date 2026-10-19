@@ -20,9 +20,21 @@ document.addEventListener("DOMContentLoaded", function () {
         lipy: "Lípy",
         rr: "R&R"
     };
+    var INFO_PAGE_NAMES = {
+        infolipy: "Informace - Lípy",
+        infoarnika: "Informace - Arnika"
+    };
 
     var pendingImages = [];
     var isCompressing = false;
+
+    var infoPendingImages = [];
+    var isInfoCompressing = false;
+
+    function isInfoPost(post) {
+        if (!post || !post.pages || typeof post.pages !== "object") return false;
+        return post.pages.infolipy !== undefined || post.pages.infoarnika !== undefined;
+    }
 
     /**
      * Načtení všech příspěvků ze serveru (GET api.php)
@@ -422,13 +434,17 @@ document.addEventListener("DOMContentLoaded", function () {
         var posts = await loadPosts();
         adminList.innerHTML = "";
 
-        if (posts.length === 0) {
+        var regularPosts = posts.filter(function (p) {
+            return !isInfoPost(p);
+        });
+
+        if (regularPosts.length === 0) {
             if (emptyState) emptyState.style.display = "block";
             return;
         }
         if (emptyState) emptyState.style.display = "none";
 
-        posts.forEach(function (post) {
+        regularPosts.forEach(function (post) {
             post = migratePost(post);
             var item = document.createElement("div");
             item.className = "maintrance-admin-item";
@@ -616,9 +632,316 @@ document.addEventListener("DOMContentLoaded", function () {
         await renderAdminList();
     }
 
+    /**
+     * Vykreslení seznamu informací pro oddíly v administraci
+     */
+    async function renderInfoAdminList() {
+        var adminList = document.getElementById("info-admin-list");
+        var emptyState = document.getElementById("info-admin-empty-state");
+        if (!adminList) return;
+
+        var posts = await loadPosts();
+        adminList.innerHTML = "";
+
+        var infoPosts = posts.filter(function (p) {
+            return isInfoPost(p);
+        });
+
+        if (infoPosts.length === 0) {
+            if (emptyState) emptyState.style.display = "block";
+            return;
+        }
+        if (emptyState) emptyState.style.display = "none";
+
+        infoPosts.forEach(function (post) {
+            post = migratePost(post);
+            var item = document.createElement("div");
+            item.className = "maintrance-admin-item";
+
+            var header = document.createElement("div");
+            header.className = "maintrance-admin-item-header";
+
+            var title = document.createElement("span");
+            title.className = "maintrance-admin-item-title";
+            var displayTitle = post.title && post.title.trim() !== ""
+                ? post.title
+                : (post.content && post.content.trim() !== ""
+                    ? (post.content.length > 40 ? post.content.substring(0, 40) + "..." : post.content)
+                    : "Informace");
+            title.textContent = displayTitle;
+
+            var deleteBtn = document.createElement("button");
+            deleteBtn.className = "maintrance-btn-delete";
+            deleteBtn.textContent = "Smazat";
+
+            deleteBtn.addEventListener("click", async function () {
+                if (!confirm("Opravdu chcete tuto informaci smazat?")) {
+                    return;
+                }
+
+                deleteBtn.disabled = true;
+                deleteBtn.textContent = "Mažu...";
+
+                var success = await deletePost(post.id);
+                if (success) {
+                    await renderInfoAdminList();
+                } else {
+                    deleteBtn.disabled = false;
+                    deleteBtn.textContent = "Smazat";
+                }
+            });
+
+            header.appendChild(title);
+            header.appendChild(deleteBtn);
+
+            var toggles = document.createElement("div");
+            toggles.className = "maintrance-admin-toggles";
+
+            Object.keys(INFO_PAGE_NAMES).forEach(function (pageKey) {
+                var toggleItem = document.createElement("div");
+                toggleItem.className = "maintrance-toggle-item";
+
+                var toggleLabel = document.createElement("label");
+                toggleLabel.className = "maintrance-toggle-switch";
+                if (pageKey === "infolipy") {
+                    toggleLabel.classList.add("maintrance-toggle-slider-lipy");
+                } else if (pageKey === "infoarnika") {
+                    toggleLabel.classList.add("maintrance-toggle-slider-arnika");
+                }
+
+                var checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.checked = post.pages && post.pages[pageKey] === true;
+
+                checkbox.addEventListener("change", async function () {
+                    var prevValue = !checkbox.checked;
+                    checkbox.disabled = true;
+
+                    if (!post.pages || typeof post.pages !== "object") {
+                        post.pages = {};
+                    }
+                    post.pages[pageKey] = checkbox.checked;
+
+                    var success = await updatePost(post.id, { pages: post.pages });
+                    checkbox.disabled = false;
+
+                    if (!success) {
+                        checkbox.checked = prevValue;
+                        post.pages[pageKey] = prevValue;
+                    }
+                });
+
+                var slider = document.createElement("span");
+                slider.className = "maintrance-toggle-slider";
+
+                toggleLabel.appendChild(checkbox);
+                toggleLabel.appendChild(slider);
+
+                var pageName = document.createElement("span");
+                pageName.textContent = INFO_PAGE_NAMES[pageKey];
+
+                toggleItem.appendChild(toggleLabel);
+                toggleItem.appendChild(pageName);
+                toggles.appendChild(toggleItem);
+            });
+
+            item.appendChild(header);
+            item.appendChild(toggles);
+            adminList.appendChild(item);
+        });
+    }
+
+    function renderInfoUploadThumbs() {
+        var container = document.getElementById("info-upload-thumbs");
+        if (!container) return;
+        container.innerHTML = "";
+        infoPendingImages.forEach(function (dataUrl, index) {
+            var item = document.createElement("div");
+            item.className = "maintrance-upload-thumb-item";
+
+            var img = document.createElement("img");
+            img.src = dataUrl;
+            img.alt = "";
+
+            var removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.className = "maintrance-upload-thumb-remove";
+            removeBtn.textContent = "✕";
+            removeBtn.addEventListener("click", function () {
+                infoPendingImages.splice(index, 1);
+                renderInfoUploadThumbs();
+            });
+
+            item.appendChild(img);
+            item.appendChild(removeBtn);
+            container.appendChild(item);
+        });
+    }
+
+    function addFilesToInfoPending(files) {
+        var validFiles = [];
+        for (var i = 0; i < files.length; i++) {
+            if (files[i].type.startsWith("image/")) {
+                validFiles.push(files[i]);
+            }
+        }
+        if (validFiles.length === 0) return;
+
+        var addBtn = document.getElementById("info-add-post-btn");
+        if (addBtn) addBtn.disabled = true;
+        isInfoCompressing = true;
+
+        var remaining = validFiles.length;
+        validFiles.forEach(function (file) {
+            compressImage(file, function (dataUrl) {
+                if (dataUrl) {
+                    infoPendingImages.push(dataUrl);
+                }
+                remaining--;
+                if (remaining <= 0) {
+                    isInfoCompressing = false;
+                    if (addBtn) addBtn.disabled = false;
+                    renderInfoUploadThumbs();
+                }
+            });
+        });
+    }
+
+    function initInfoUploadZone() {
+        var zone = document.getElementById("info-upload-zone");
+        var fileInput = document.getElementById("info-post-image");
+
+        if (!zone || !fileInput) return;
+
+        fileInput.addEventListener("change", function () {
+            if (fileInput.files && fileInput.files.length > 0) {
+                addFilesToInfoPending(fileInput.files);
+                fileInput.value = "";
+            }
+        });
+
+        zone.addEventListener("dragover", function (e) {
+            e.preventDefault();
+            zone.classList.add("dragover");
+        });
+
+        zone.addEventListener("dragleave", function () {
+            zone.classList.remove("dragover");
+        });
+
+        zone.addEventListener("drop", function (e) {
+            e.preventDefault();
+            zone.classList.remove("dragover");
+            if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                addFilesToInfoPending(e.dataTransfer.files);
+            }
+        });
+    }
+
+    function clearInfoUpload() {
+        infoPendingImages = [];
+        var container = document.getElementById("info-upload-thumbs");
+        if (container) container.innerHTML = "";
+        var fileInput = document.getElementById("info-post-image");
+        if (fileInput) fileInput.value = "";
+    }
+
+    /**
+     * Inicializace formuláře pro přidání informací pro oddíly
+     */
+    async function initInfoMaintrance() {
+        var addBtn = document.getElementById("info-add-post-btn");
+        if (!addBtn) return;
+
+        var titleInput = document.getElementById("info-post-title");
+        var contentInput = document.getElementById("info-post-content");
+        var checkboxes = document.querySelectorAll(".info-page-checkbox");
+        initInfoUploadZone();
+
+        addBtn.addEventListener("click", async function () {
+            if (isInfoCompressing) return;
+
+            var title = titleInput.value.trim();
+            var content = contentInput.value.trim();
+            var hasImages = infoPendingImages.length > 0;
+
+            if (title === "" && content === "" && !hasImages) {
+                var block = addBtn.closest(".maintrance-block");
+                if (block) {
+                    block.classList.remove("maintrance-shake");
+                    void block.offsetWidth;
+                    block.classList.add("maintrance-shake");
+                }
+                return;
+            }
+
+            var pages = {};
+            checkboxes.forEach(function (cb) {
+                pages[cb.value] = cb.checked;
+            });
+
+            var hasAnyPage = false;
+            Object.keys(pages).forEach(function (k) {
+                if (pages[k]) hasAnyPage = true;
+            });
+
+            if (!hasAnyPage) {
+                var block = addBtn.closest(".maintrance-block");
+                if (block) {
+                    block.classList.remove("maintrance-shake");
+                    void block.offsetWidth;
+                    block.classList.add("maintrance-shake");
+                }
+                return;
+            }
+
+            var newPost = {
+                id: generateId(),
+                title: title,
+                content: content,
+                images: infoPendingImages.slice(),
+                pages: pages,
+                created: Date.now()
+            };
+
+            addBtn.disabled = true;
+            var originalBtnText = addBtn.textContent;
+            addBtn.textContent = "Ukládám na server...";
+
+            var success = await savePost(newPost);
+
+            addBtn.disabled = false;
+            addBtn.textContent = originalBtnText;
+
+            if (!success) {
+                return;
+            }
+
+            titleInput.value = "";
+            contentInput.value = "";
+            checkboxes.forEach(function (cb) { cb.checked = false; });
+            if (checkboxes.length > 0) {
+                checkboxes[0].checked = true;
+            }
+            clearInfoUpload();
+            titleInput.focus();
+
+            await renderInfoAdminList();
+        });
+
+        titleInput.addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+                contentInput.focus();
+            }
+        });
+
+        await renderInfoAdminList();
+    }
+
     document.addEventListener("DOMContentLoaded", async function () {
         await migrateLocalStorageIfNeeded();
         await initMaintrance();
+        await initInfoMaintrance();
         await renderFrontendPosts();
     });
 })();
