@@ -1,0 +1,1455 @@
+:root {
+    /* Skaut barvy */
+    --zluta-svetla: #fcc11e;
+    --zluta: #f9b200;
+    --zluta-tmava: #f49e00;
+    --zluta-nejtmavsi: #cd8602;
+
+    --kremova-svetla: #f5efdf;
+    --kremova: #fce392;
+    --cervena: #cd2652;
+    --cervena-tmava: #971b3c;
+
+    --seda-svetla: #898989;
+    --seda: #58595b;
+    --seda-tmava: #272727;
+    --seda-nejtmavsi: #58595b;
+
+    --modra-svetla: #3979b5;
+    --modra: #336cca;
+    --modra-tmava: #255c9e;
+    --modra-nejtmavsi: #294885;
+}
+
+@font-face {
+    font-family: 'Skaut BOLD';
+    src: url("fonts/skaut-bold-webfont.woff2") format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Skaut TheMixLT400';
+    src: url("fonts/TheMix_LT_400.woff") format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Skaut TheMixLT700';
+    src: url("fonts/TheMix_LT_700.woff") format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+::selection {
+    background: var(--cervena-tmava);
+    color: #FFFFFF;
+}
+
+/* header */
+.hlavni_lista {
+    position: sticky;
+    top: 0;
+    background-color: var(--kremova-svetla);
+    z-index: 1000;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 8px;
+    padding-left: 20px;
+    padding-right: 20px;
+    filter: drop-shadow(0px 5px 0px var(--seda-svetla)) drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.15));
+}
+
+.hlavni_lista::after {
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    left: 0px;
+    width: 100%;
+    height: 20px;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 1200 120' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,0 L60,0 C150,120 300,120 450,0 L1200,0 Z' fill='%23f5efdf'/%3E%3C/svg%3E");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    pointer-events: none;
+}
+
+.lista_logo {
+    display: flex;
+    align-items: center;
+}
+
+.lista_logo_img {
+    height: 70px;
+    width: auto;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.navigace_odkaz {
+    font-family: "Skaut BOLD";
+    font-size: 27px;
+    color: var(--zluta-svetla);
+    margin-left: 18px
+}
+
+.navigace_odkaz:hover {
+    color: var(--zluta-tmava);
+}
+
+#navigace_index,
+#navigace_procleny,
+#navigace_dokumenty,
+#navigace_tabor {
+    color: var(--modra);
+}
+
+#navigace_lipy,
+#navigace_arnika,
+#navigace_rr {
+    color: var(--cervena);
+}
+
+#navigace_historie {
+    color: var(--zluta-tmava);
+}
+
+#navigace_index:hover,
+#navigace_procleny:hover,
+#navigace_dokumenty:hover,
+#navigace_tabor:hover {
+    color: var(--modra-tmava);
+}
+
+#navigace_lipy:hover,
+#navigace_arnika:hover,
+#navigace_rr:hover {
+    color: var(--cervena-tmava);
+}
+
+#navigace_historie:hover {
+    color: var(--zluta-nejtmavsi);
+}
+
+/* --- ZÁKLAD PRO HAMBURGER (Na PC skrytý) --- */
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 35px;
+    height: 25px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1001;
+    /* Aby bylo tlačítko vždy nahoře */
+}
+
+/* Tři čárky v hamburger menu */
+.hamburger-menu span {
+    width: 100%;
+    height: 4px;
+    background-color: var(--modra);
+    /* Barvu můžeš změnit */
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+/* Zajištění, že navigace na PC je flexbox, aby šla na mobilu lépe skládat pod sebe */
+.navigace {
+    display: flex;
+    align-items: center;
+}
+
+/* --- RESPONZIVITA (PRO MOBILY A TABLETY) --- */
+@media screen and (max-width: 1350px) {
+
+    /* Zobrazíme tlačítko */
+    .hamburger-menu {
+        display: flex;
+    }
+
+    /* Schováme a upravíme navigaci */
+    .navigace {
+        position: absolute;
+        top: 100%;
+        /* Spustí se hned pod hlavičkou */
+        left: 0;
+        width: 100%;
+        background-color: var(--kremova-svetla);
+        flex-direction: column;
+        /* Poskládá odkazy pod sebe */
+        padding: 0;
+        max-height: 0;
+        /* V základu schované pomocí výšky 0 */
+        overflow: hidden;
+        transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
+        box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.15);
+        /* Stín pod rozbaleným menu */
+    }
+
+    /* Třída, která se přidá přes JS po kliknutí - ROZBALENÍ */
+    .navigace.otevreno {
+        max-height: 600px;
+        /* Musí být větší než je reálná výška všech odkazů */
+        padding: 20px 0;
+        border-top: 1px solid var(--seda-svetla);
+        /* Linka pro oddělení od hlavičky */
+    }
+
+    /* Úprava mezer odkazů na mobilu */
+    .navigace_odkaz {
+        margin: 10px 0;
+        font-size: 24px;
+        /* Trochu zmenšíme, ať se na mobil vejdou lépe */
+    }
+
+    /* --- ANIMACE KŘÍŽKU Z HAMBURGERU --- */
+    /* Po rozbalení se z 3 čárek udělá "X" */
+    .hamburger-menu.otevreno span:nth-child(1) {
+        transform: translateY(10.5px) rotate(45deg);
+    }
+
+    .hamburger-menu.otevreno span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger-menu.otevreno span:nth-child(3) {
+        transform: translateY(-10.5px) rotate(-45deg);
+    }
+}
+
+/* main */
+
+.banner {
+    margin-top: 0px !important;
+    height: 60vh;
+    min-height: 400px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-bottom: 5px solid var(--seda-svetla);
+    width: 100%;
+}
+
+
+#banner_domu {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("images/banner_domu.JPG");
+}
+
+#banner_rr {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("images/banner_rr.JPG");
+}
+
+#banner_arnika {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("images/banner_arnika.jpeg");
+}
+
+#banner_lipy {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("images/banner_lipy.jpeg");
+}
+
+.banner_text {
+    padding: 20px;
+    font-family: 'Skaut BOLD';
+    opacity: 70%;
+    font-size: 600%;
+    color: var(--kremova);
+    margin-bottom: 10px;
+    transform: scale(1);
+    transition: opacity 0.5s linear, transform 0.5s linear;
+    width: fit-content;
+}
+
+.banner_text:hover {
+    opacity: 100%;
+    transform: scale(1.01);
+}
+
+.odstavec {
+    margin-top: 55px;
+}
+
+h2 {
+    text-align: center;
+    font-size: 55px;
+    font-family: "Skaut BOLD";
+    color: var(--zluta-svetla);
+}
+
+h3 {
+    text-align: center;
+    font-size: 35px;
+    font-family: "Skaut BOLD";
+    color: var(--cervena-svetla);
+}
+
+
+#prosty_text_popis_strediska,
+#prosty_text_popis_arniky,
+#prosty_text_popis_lipy,
+#prosty_text_popis_rr {
+    text-align: center;
+    font-size: 22px;
+    font-family: "Skaut TheMixLT700";
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+.instagram {
+    color: #c13584;
+}
+
+.facebook {
+    color: #4267B2;
+}
+
+.oddily {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1000px;
+    padding: 20px;
+    gap: 20px;
+}
+
+.oddil {
+    height: 450px;
+    width: 300px;
+    background-color: var(--cervena-svetla);
+    border-radius: 10px;
+    box-shadow: 0px 5px 0px var(--seda-svetla);
+    border: 5px solid var(--seda-svetla);
+    text-align: center;
+    background-color: var(--kremova-svetla)
+}
+
+.oddily a {
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.3s ease-in-out;
+}
+
+.oddily a:hover {
+    transform: scale(1.03);
+}
+
+.oddil h4 {
+    padding-top: 20px;
+    text-align: center;
+    color: var(--seda-tmava);
+    font-size: 30px;
+    font-family: "Skaut BOLD";
+}
+
+.oddil img {
+    height: 280px;
+    width: auto;
+}
+
+.oddil p {
+    font-family: "Skaut TheMixLT400";
+    font-size: 22px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+footer {
+    margin-top: 50px;
+}
+
+#footer_dva_sloupy {
+    justify-content: center;
+    flex-wrap: wrap;
+    display: flex;
+    gap: 1%;
+}
+
+#div_kontakty {
+    width: 45%;
+    background-color: var(--kremova-svetla);
+}
+
+#div_podporovatele {
+    width: 45%;
+    background-color: var(--kremova-svetla);
+}
+
+
+
+.text {
+    text-align: center;
+    font-family: "Skaut BOLD";
+    color: var(--zluta-svetla);
+}
+
+/* ========== MAINTRANCE – správa příspěvků ========== */
+
+.maintrance-container {
+    width: 75%;
+    max-width: 2000px;
+    margin: 40px auto;
+    margin-top: 70px;
+    padding: 0 20px;
+}
+
+.maintrance-block {
+    background-color: var(--kremova-svetla);
+    padding: 2rem;
+    border-radius: 14px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    margin-bottom: 2rem;
+    border: 3px solid var(--seda-svetla);
+}
+
+.maintrance-nadpis {
+    text-align: left;
+    font-size: 28px;
+    margin-bottom: 1.5rem;
+    color: var(--modra) !important;
+}
+
+.maintrance-form-group {
+    margin-bottom: 1.2rem;
+}
+
+.maintrance-form-group>label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    font-size: 0.95rem;
+    font-family: "Skaut TheMixLT700";
+    color: var(--seda-tmava);
+}
+
+.maintrance-form-group input[type="text"],
+.maintrance-form-group textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--seda-svetla);
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: "Skaut TheMixLT400";
+    background: #fff;
+    transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.maintrance-form-group input[type="text"]:focus,
+.maintrance-form-group textarea:focus {
+    outline: none;
+    border-color: var(--modra);
+    box-shadow: 0 0 0 4px rgba(51, 108, 202, 0.15);
+}
+
+.maintrance-form-group textarea {
+    resize: vertical;
+    min-height: 110px;
+}
+
+.maintrance-checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.maintrance-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-family: "Skaut TheMixLT700";
+    font-size: 0.95rem;
+    color: var(--seda-tmava);
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 2px solid var(--seda-svetla);
+    background: #fff;
+    transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
+    user-select: none;
+}
+
+.maintrance-checkbox-label:hover {
+    border-color: var(--modra);
+}
+
+.maintrance-checkbox-label input[type="checkbox"] {
+    display: none;
+}
+
+.maintrance-checkbox-custom {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--seda-svetla);
+    border-radius: 5px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s, border-color 0.2s;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.maintrance-checkbox-custom::after {
+    content: "";
+    width: 10px;
+    height: 6px;
+    border-left: 2.5px solid #fff;
+    border-bottom: 2.5px solid #fff;
+    transform: rotate(-45deg) scale(0);
+    transition: transform 0.15s ease;
+    position: absolute;
+    top: 3px;
+    left: 2px;
+}
+
+.maintrance-checkbox-label input[type="checkbox"]:checked~.maintrance-checkbox-custom {
+    background-color: var(--modra);
+    border-color: var(--modra);
+}
+
+.maintrance-checkbox-label input[type="checkbox"]:checked~.maintrance-checkbox-custom::after {
+    transform: rotate(-45deg) scale(1);
+}
+
+.maintrance-btn-add {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    font-family: "Skaut BOLD";
+    font-size: 1.1rem;
+    cursor: pointer;
+    background: linear-gradient(135deg, var(--modra), var(--modra-tmava));
+    color: #fff;
+    transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
+    margin-top: 0.5rem;
+}
+
+.maintrance-btn-add:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(51, 108, 202, 0.35);
+}
+
+.maintrance-btn-add:active {
+    transform: translateY(0);
+}
+
+.maintrance-admin-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    gap: 12px;
+}
+
+.maintrance-empty-admin {
+    text-align: center;
+    font-family: "Skaut TheMixLT400";
+    color: var(--seda-svetla);
+    font-style: italic;
+    padding: 2rem 1rem;
+    font-size: 1rem;
+}
+
+.maintrance-admin-item {
+    background: #fff;
+    border: 2px solid var(--seda-svetla);
+    border-radius: 10px;
+    padding: 5px 5px;
+    width: 100%;
+    max-width: 90%;
+    transition: box-shadow 0.2s;
+}
+
+.maintrance-admin-item:hover {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+}
+
+.maintrance-admin-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.maintrance-admin-item-title {
+    font-family: "Skaut BOLD";
+    font-size: 1.05rem;
+    color: var(--modra);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    margin-right: 12px;
+}
+
+.maintrance-btn-delete {
+    background: transparent;
+    color: var(--cervena);
+    border: 2px solid var(--cervena);
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    font-family: "Skaut TheMixLT700";
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, transform 0.15s;
+    flex-shrink: 0;
+}
+
+.maintrance-btn-delete:hover {
+    background-color: var(--cervena);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.maintrance-admin-toggles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.maintrance-toggle-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: "Skaut TheMixLT400";
+    font-size: 0.85rem;
+    color: var(--seda-tmava);
+}
+
+.maintrance-toggle-switch {
+    position: relative;
+    width: 40px;
+    height: 22px;
+    flex-shrink: 0;
+}
+
+.maintrance-toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.maintrance-toggle-slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--seda-svetla);
+    border-radius: 22px;
+    cursor: pointer;
+    transition: background-color 0.25s;
+}
+
+.maintrance-toggle-slider::before {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    left: 3px;
+    bottom: 3px;
+    background-color: #fff;
+    border-radius: 50%;
+    transition: transform 0.25s;
+}
+
+.maintrance-toggle-switch input:checked+.maintrance-toggle-slider {
+    background-color: var(--modra);
+}
+
+.maintrance-toggle-switch input:checked+.maintrance-toggle-slider::before {
+    transform: translateX(18px);
+}
+
+.prispevky-sekce {
+    margin: 30px auto;
+    padding: 0 20px;
+    width: 40%;
+    max-width: 1700px;
+}
+
+.prispevky-kontejner {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.prispevek-karta {
+    background-color: var(--kremova-svetla);
+    padding: 1.5rem 2rem;
+    border-radius: 12px;
+    border: 2px solid var(--seda-svetla);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    animation: prispevekFadeIn 0.35s ease;
+}
+
+@keyframes prispevekFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.prispevek-karta-nadpis {
+    font-family: "Skaut BOLD";
+    font-size: 1.3rem;
+    color: var(--modra);
+    margin-bottom: 8px;
+}
+
+.prispevek-karta-obsah {
+    font-family: "Skaut TheMixLT400";
+    font-size: 1rem;
+    color: var(--seda-tmava);
+    white-space: pre-wrap;
+    line-height: 1.6;
+}
+
+.prispevek-karta-datum {
+    font-family: "Skaut TheMixLT400";
+    font-size: 0.8rem;
+    color: var(--seda-svetla);
+    margin-top: 10px;
+    text-align: right;
+}
+
+.maintrance-upload-zone {
+    position: relative;
+    border: 2px dashed var(--seda-svetla);
+    border-radius: 10px;
+    background: #fff;
+    cursor: pointer;
+    transition: border-color 0.25s, background-color 0.25s;
+    overflow: hidden;
+}
+
+.maintrance-upload-zone:hover,
+.maintrance-upload-zone.dragover {
+    border-color: var(--modra);
+    background-color: rgba(51, 108, 202, 0.04);
+}
+
+.maintrance-upload-zone input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.maintrance-upload-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 28px 16px;
+    font-family: "Skaut TheMixLT400";
+    font-size: 0.95rem;
+    color: var(--seda-svetla);
+}
+
+.maintrance-upload-thumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.maintrance-upload-thumb-item {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid var(--seda-svetla);
+    flex-shrink: 0;
+}
+
+.maintrance-upload-thumb-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.maintrance-upload-thumb-remove {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: none;
+    background: var(--cervena);
+    color: #fff;
+    font-size: 0.7rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
+    transition: background-color 0.2s, transform 0.15s;
+    z-index: 1;
+}
+
+.maintrance-upload-thumb-remove:hover {
+    background: var(--cervena-tmava);
+    transform: scale(1.15);
+}
+
+.prispevek-karta-galerie {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin: 0 auto 12px auto;
+    width: 65%;
+    max-width: 100%;
+}
+
+.prispevek-galerie-img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    border-radius: 8px;
+}
+
+@keyframes maintrance-shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    20% {
+        transform: translateX(-4px);
+    }
+
+    40% {
+        transform: translateX(4px);
+    }
+
+    60% {
+        transform: translateX(-4px);
+    }
+
+    80% {
+        transform: translateX(4px);
+    }
+}
+
+.maintrance-shake {
+    animation: maintrance-shake 0.4s ease;
+}
+
+@media (max-width: 900px) {
+    .maintrance-container {
+        width: 92%;
+        max-width: 92%;
+    }
+
+    .prispevky-sekce {
+        width: 92%;
+        max-width: 92%;
+    }
+
+    .maintrance-admin-item {
+        max-width: 100%;
+    }
+
+    .prispevek-karta-galerie {
+        width: 100%;
+    }
+}
+
+/* ======================================================== */
+/* STRÁNKA PRO ČLENY */
+/* ======================================================== */
+
+.procleny-sekce {
+    width: 70%;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 15px;
+}
+
+.procleny-hlavni-nadpis {
+    color: var(--modra);
+    font-size: 60px;
+    font-family: "Skaut BOLD";
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.procleny-kategorie {
+    background-color: var(--kremova-svetla);
+    border: 2px solid var(--seda-svetla);
+    border-radius: 12px;
+    padding: 22px 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.procleny-kategorie:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.procleny-kategorie-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+    gap: 15px;
+    padding: 4px 0;
+}
+
+.procleny-kategorie h3 {
+    font-family: "Skaut BOLD";
+    font-size: 35px;
+    margin: 0;
+    transition: opacity 0.2s ease;
+}
+
+.procleny-kategorie-header:hover h3 {
+    opacity: 0.85;
+}
+
+/* Střídání stran a barev pro nadpisy h3 a šipečku */
+.procleny-kategorie:nth-of-type(odd) .procleny-kategorie-header {
+    flex-direction: row;
+    color: var(--modra-nejtmavsi);
+}
+
+.procleny-kategorie:nth-of-type(odd) h3 {
+    text-align: left;
+    color: var(--modra-nejtmavsi);
+}
+
+.procleny-kategorie:nth-of-type(even) .procleny-kategorie-header {
+    flex-direction: row-reverse;
+    color: var(--zluta-nejtmavsi);
+}
+
+.procleny-kategorie:nth-of-type(even) h3 {
+    text-align: right;
+    color: var(--zluta-nejtmavsi);
+}
+
+/* Šipečka */
+.procleny-sipka {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.04);
+    flex-shrink: 0;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s ease;
+    color: inherit;
+}
+
+.procleny-kategorie-header:hover .procleny-sipka {
+    background-color: rgba(0, 0, 0, 0.09);
+}
+
+.procleny-sipka svg {
+    display: block;
+    width: 24px;
+    height: 24px;
+}
+
+/* Otočení šipečky po rozbalení */
+.procleny-kategorie.otevreno .procleny-sipka {
+    transform: rotate(180deg);
+}
+
+/* Seznam položek – ve výchozím stavu zabalený (skrytý) */
+.procleny-kategorie ul {
+    display: none;
+    list-style: none;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 10px 18px;
+    padding: 0;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 2px dashed rgba(137, 137, 137, 0.3);
+}
+
+/* Rozbalený stav */
+.procleny-kategorie.otevreno ul {
+    display: grid;
+    animation: proclenyFadeIn 0.3s ease;
+}
+
+@keyframes proclenyFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.procleny-kategorie li label,
+.procleny-kategorie-text {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: "Skaut TheMixLT400";
+    font-size: 1.05rem;
+    color: var(--seda-tmava);
+    line-height: 1.4;
+}
+
+.procleny-kategorie li label {
+    cursor: pointer;
+    transition: color 0.15s ease;
+    user-select: none;
+
+}
+
+.procleny-kategorie li label:hover {
+    color: #000;
+}
+
+.procleny-kategorie li input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    accent-color: var(--modra);
+    cursor: pointer;
+}
+
+/* Přeškrtnutí textu při zaškrtnutí checkboxu */
+.procleny-kategorie li input[type="checkbox"]:checked+span,
+.procleny-kategorie li:has(input[type="checkbox"]:checked) {
+    text-decoration: line-through;
+    color: var(--seda-svetla);
+}
+
+/* Malý šedý text s upozorněním */
+.procleny-upozorneni {
+    text-align: center;
+    font-size: 0.85rem;
+    font-family: "Skaut TheMixLT400";
+    color: var(--seda-svetla);
+    font-style: italic;
+    margin-top: 15px;
+    margin-bottom: 25px;
+}
+
+/* ======================================================== */
+/* ŠIFROVAČ                                                 */
+/* ======================================================== */
+
+.sifrovac {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.sifrovac .container {
+    background-color: var(--kremova-svetla);
+    border: 2px solid var(--seda-svetla);
+    border-radius: 12px;
+    padding: 24px 28px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.sifrovac .flex-row {
+    display: flex;
+    gap: 24px;
+}
+
+.sifrovac .column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sifrovac label {
+    font-family: "Skaut BOLD";
+    font-size: 1.15rem;
+    color: var(--modra-nejtmavsi);
+    display: block;
+}
+
+.sifrovac textarea {
+    width: 100%;
+    min-height: 190px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 2px solid var(--seda-svetla);
+    background-color: #ffffff;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 1.15rem;
+    font-weight: 600;
+    line-height: 1.6;
+    color: var(--seda-tmava);
+    outline: none;
+    resize: vertical;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.sifrovac textarea:focus {
+    border-color: var(--modra);
+    box-shadow: 0 0 0 3px rgba(51, 108, 202, 0.15);
+}
+
+.sifrovac textarea[readonly] {
+    background-color: #faf9f6;
+    color: var(--modra-nejtmavsi);
+    cursor: default;
+    letter-spacing: 1px;
+}
+
+@media (max-width: 900px) {
+    .procleny-sekce {
+        width: 92%;
+        max-width: 92%;
+    }
+
+    .procleny-hlavni-nadpis {
+        font-size: 34px;
+    }
+
+    .procleny-kategorie {
+        padding: 16px 18px;
+    }
+
+    .procleny-kategorie h3 {
+        font-size: 22px;
+    }
+
+    .procleny-sipka {
+        width: 32px;
+        height: 32px;
+    }
+
+    .procleny-sipka svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .procleny-kategorie ul {
+        grid-template-columns: 1fr;
+    }
+
+    .sifrovac .flex-row {
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .sifrovac .container {
+        padding: 16px 18px;
+    }
+
+    .sifrovac textarea {
+        min-height: 140px;
+    }
+}
+
+#typ-sifry {
+    font-family: "Skaut BOLD";
+    font-size: 1.15rem;
+    color: var(--modra-nejtmavsi);
+    text-align: center;
+    width: 200px;
+    background-color: var(--kremova-svetla);
+    border: 3px solid var(--zluta-nejtmavsi);
+    border-radius: 20px;
+}
+
+/* ======================================================== */
+/* KONTAKTY – VEDENÍ STŘEDISKA                              */
+/* ======================================================== */
+
+.kontakty {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 70px auto 50px auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.kontakty h2 {
+    width: 100%;
+    font-family: "Skaut BOLD";
+    font-size: 48px;
+    text-transform: uppercase;
+    color: var(--seda-tmava);
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+}
+
+.kontakty h5 {
+    width: 100%;
+    font-family: "Skaut TheMixLT400";
+    font-size: 1rem;
+    font-weight: normal;
+    color: var(--seda);
+    margin-bottom: 50px;
+}
+
+.kontakty .osoba {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 240px;
+    margin: 15px 18px;
+    text-align: center;
+}
+
+.kontakty .osoba img {
+    order: 1;
+    width: 165px;
+    height: 165px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 18px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.kontakty .osoba:hover img {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.13);
+}
+
+.kontakty .osoba h6 {
+    order: 2;
+    font-family: "Skaut BOLD";
+    font-size: 1.15rem;
+    text-transform: uppercase;
+    color: var(--seda-tmava);
+    margin: 0 0 8px 0;
+    padding-bottom: 5px;
+    display: inline-block;
+}
+
+.z-lip {
+    border-bottom: 2.5px solid #689C40;
+}
+
+.z-arniky {
+    border-bottom: 2.5px solid #bba782;
+}
+
+.z-rr {
+    border-bottom: 2.5px solid var(--cervena-tmava);
+}
+
+.z-odjinud {
+    border-bottom: 2.5px solid var(--modra-tmava);
+}
+
+
+.kontakty .osoba p {
+    order: 3;
+    margin: 0;
+    line-height: 1.45;
+}
+
+.kontakty .osoba p a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.kontakty .osoba p a:hover {
+    text-decoration: underline;
+}
+
+/* Pozice */
+.kontakty .osoba p:nth-of-type(1) {
+    font-family: "Skaut TheMixLT700";
+    font-size: 0.95rem;
+    color: var(--seda-tmava);
+    margin-bottom: 4px;
+}
+
+/* Email a telefon */
+.kontakty .osoba p:nth-of-type(2),
+.kontakty .osoba p:nth-of-type(3) {
+    font-family: "Skaut TheMixLT400";
+    font-size: 0.88rem;
+    color: #d85d50;
+    margin-bottom: 2px;
+}
+
+@media (max-width: 900px) {
+    .kontakty h2 {
+        font-size: 32px;
+    }
+
+    .kontakty h5 {
+        margin-bottom: 30px;
+    }
+
+    .kontakty .osoba {
+        width: 100%;
+        max-width: 240px;
+        margin: 15px auto;
+    }
+}
+
+/* --- ZÁKLAD PATIČKY --- */
+.hlavni-footer {
+    background-color: var(--kremova-svetla);
+    color: black;
+    font-family: 'Skaut TheMixLT400', sans-serif;
+    padding: 60px 20px 20px 20px;
+    margin-top: auto;
+    /* Natlačí patičku dolů, pokud je na stránce málo obsahu */
+}
+
+/* Odkazy v kontaktech */
+.hlavni-footer a {
+    color: var(--modra);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+
+/* --- DVA HLAVNÍ SLOUPCE --- */
+#footer_dva_sloupy {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid black;
+    /* Poloprůhledná krémová linka */
+}
+
+#footer_dva_sloupy h4 {
+    font-family: 'Skaut BOLD', sans-serif;
+    font-size: 38px;
+    color: var(--modra-tmava);
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+/* Typografie kontaktů */
+#div_kontakty p {
+    margin-bottom: 20px;
+    line-height: 1.6;
+    font-size: 17px;
+}
+
+#div_kontakty strong {
+    font-family: 'Skaut TheMixLT700', sans-serif;
+    color: var(--modra);
+    font-size: 25px;
+}
+
+/* --- CHYTRÁ MŘÍŽKA SPONZORŮ --- */
+.sponzori-grid {
+    display: grid;
+    /* Tohle automaticky vytvoří sloupce, které se zalamují podle počtu sponzorů */
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 15px;
+}
+
+.sponzor-polozka {
+    background-color: rgba(255, 255, 255, 0.05);
+    /* Lehký poloprůhledný podklad */
+    border-radius: 8px;
+    padding: 15px 10px;
+    text-align: center;
+}
+
+
+.sponzor-polozka img {
+    max-width: 100%;
+    height: 50px;
+    /* Jednotná maximální výška loga */
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+
+.sponzor-polozka p {
+    font-size: 13px;
+    margin: 0;
+    line-height: 1.3;
+}
+
+/* --- SPODNÍ ČÁST S COPYRIGHTEM --- */
+.footer-bottom {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 25px;
+    font-size: 14px;
+    color: var(--modra-nejtmavsi);
+}
+
+.footer-bottom p {
+    margin: 0;
+}
+
+.nahoru-odkaz {
+    font-family: 'Skaut BOLD', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* --- RESPONZIVITA (Mobily a menší obrazovky) --- */
+@media screen and (max-width: 850px) {
+    #footer_dva_sloupy {
+        grid-template-columns: 1fr;
+        /* Na mobilu hodí sloupce pod sebe */
+        gap: 40px;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+}
