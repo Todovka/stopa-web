@@ -54,7 +54,7 @@
     </div>
 
     <div class="maintrance-block">
-        <h2 class="maintrance-nadpis">Přidat nový příspěvek – Informace pro oddíly</h2>
+        <h2 class="maintrance-nadpis">Informace pro oddíly</h2>
         <div class="maintrance-form-group">
             <label for="info-post-title">Nadpis</label>
             <input type="text" id="info-post-title" placeholder="Zadejte nadpis...">

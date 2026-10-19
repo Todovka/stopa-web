@@ -30,27 +30,22 @@
                 
                 <!-- Šablona pro jednoho sponzora -->
                 <div class="sponzor-polozka">
-                    <img src="./images/icon.jpg" alt="sponzor">
+                    <img src="./images/sponzor_ml.png" alt="Mariánské Lázně">
                     <p>Město Mariánské Lázně</p>
                 </div>
                 
                 <div class="sponzor-polozka">
-                    <img src="./images/icon.jpg" alt="sponzor">
-                    <p>Další sponzor</p>
+                    <img src="./images/sponzor_vh.png" alt="Velká Hleďsebe">
+                    <p>Obec Velká Hleďsebe</p>
+                </div>
+                <div class="sponzor-polozka">
+                    <img src="./images/sponzor_kp.png" alt="Klášter Premonstátů Teplá">
+                    <p>Klášter Premonstátů Teplá</p>
                 </div>
                 <div class="sponzor-polozka">
                     <img src="./images/icon.jpg" alt="sponzor">
                     <p>Další sponzor</p>
                 </div>
-                <div class="sponzor-polozka">
-                    <img src="./images/icon.jpg" alt="sponzor">
-                    <p>Další sponzor</p>
-                </div>
-                <div class="sponzor-polozka">
-                    <img src="./images/icon.jpg" alt="sponzor">
-                    <p>Další sponzor</p>
-                </div>
-                <!-- Sem můžeš přidávat další sponzory jak na běžícím páse -->
 
             </div>
         </div>

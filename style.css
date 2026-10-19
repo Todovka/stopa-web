@@ -48,6 +48,15 @@
     box-sizing: border-box;
 }
 
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+body {
+    overflow-x: hidden;
+}
+
 ::selection {
     background: var(--cervena-tmava);
     color: #FFFFFF;
@@ -63,10 +72,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 10px;
+    width: 100%;
+    max-width: 100%;
+    padding-top: calc(10px + env(safe-area-inset-top, 0px));
     padding-bottom: 8px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: calc(20px + env(safe-area-inset-left, 0px));
+    padding-right: calc(20px + env(safe-area-inset-right, 0px));
     filter: drop-shadow(0px 5px 0px var(--seda-svetla)) drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.15));
 }
 
@@ -204,11 +215,15 @@ main {
 
     /* Třída, která se přidá přes JS po kliknutí - ROZBALENÍ */
     .navigace.otevreno {
-        max-height: 600px;
-        /* Musí být větší než je reálná výška všech odkazů */
+        max-height: calc(100vh - 110px);
+        max-height: calc(100dvh - 110px);
+        /* Výška se řídí výškou viewportu, ať menu nikdy nepřesáhne displej */
         padding: 20px 0;
         border-top: 1px solid var(--seda-svetla);
         /* Linka pro oddělení od hlavičky */
+        overflow-y: auto;
+        /* Delší menu se dá scrollovat */
+        -webkit-overflow-scrolling: touch;
     }
 
     /* Úprava mezer odkazů na mobilu */
@@ -216,6 +231,18 @@ main {
         margin: 10px 0;
         font-size: 24px;
         /* Trochu zmenšíme, ať se na mobil vejdou lépe */
+    }
+
+    /* Hlavička se smrští podle šířky viewportu */
+    .hlavni_lista {
+        padding-top: calc(8px + env(safe-area-inset-top, 0px));
+        padding-bottom: 6px;
+        padding-left: calc(16px + env(safe-area-inset-left, 0px));
+        padding-right: calc(16px + env(safe-area-inset-right, 0px));
+    }
+
+    .lista_logo_img {
+        height: 56px;
     }
 
     /* --- ANIMACE KŘÍŽKU Z HAMBURGERU --- */
@@ -230,6 +257,49 @@ main {
 
     .hamburger-menu.otevreno span:nth-child(3) {
         transform: translateY(-10.5px) rotate(-45deg);
+    }
+}
+
+/* --- MALÉ TELEFONY (do 600px) --- */
+@media screen and (max-width: 600px) {
+    .hlavni_lista {
+        padding-top: calc(8px + env(safe-area-inset-top, 0px));
+        padding-bottom: 6px;
+        padding-left: calc(12px + env(safe-area-inset-left, 0px));
+        padding-right: calc(12px + env(safe-area-inset-right, 0px));
+    }
+
+    .lista_logo_img {
+        height: 46px;
+    }
+
+    .hamburger-menu {
+        width: 30px;
+        height: 22px;
+    }
+
+    .hamburger-menu span {
+        height: 3.5px;
+    }
+
+    /* Posun čárek pro křížek se musí přepočítat na novou velikost tlačítka */
+    .hamburger-menu.otevreno span:nth-child(1) {
+        transform: translateY(9.25px) rotate(45deg);
+    }
+
+    .hamburger-menu.otevreno span:nth-child(3) {
+        transform: translateY(-9.25px) rotate(-45deg);
+    }
+
+    .navigace_odkaz {
+        font-size: 20px;
+        margin: 8px 0;
+    }
+
+    .navigace.otevreno {
+        padding: 12px 0;
+        max-height: calc(100vh - 90px);
+        max-height: calc(100dvh - 90px);
     }
 }
 
@@ -937,21 +1007,21 @@ footer {
 }
 
 /* Administrace - akcenty pro Lípy a Arniku */
-.maintrance-checkbox-lipy input[type="checkbox"]:checked ~ .maintrance-checkbox-custom {
+.maintrance-checkbox-lipy input[type="checkbox"]:checked~.maintrance-checkbox-custom {
     background-color: #689C40;
     border-color: #689C40;
 }
 
-.maintrance-checkbox-arnika input[type="checkbox"]:checked ~ .maintrance-checkbox-custom {
+.maintrance-checkbox-arnika input[type="checkbox"]:checked~.maintrance-checkbox-custom {
     background-color: #bba782;
     border-color: #bba782;
 }
 
-.maintrance-toggle-slider-lipy input:checked + .maintrance-toggle-slider {
+.maintrance-toggle-slider-lipy input:checked+.maintrance-toggle-slider {
     background-color: #689C40;
 }
 
-.maintrance-toggle-slider-arnika input:checked + .maintrance-toggle-slider {
+.maintrance-toggle-slider-arnika input:checked+.maintrance-toggle-slider {
     background-color: #bba782;
 }
 
@@ -1466,9 +1536,10 @@ footer {
 
 /* --- CHYTRÁ MŘÍŽKA SPONZORŮ --- */
 .sponzori-grid {
-    display: grid;
-    /* Tohle automaticky vytvoří sloupce, které se zalamují podle počtu sponzorů */
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 500px;
     gap: 15px;
 }
 
@@ -1483,7 +1554,7 @@ footer {
 
 .sponzor-polozka img {
     max-width: 100%;
-    height: 50px;
+    height: 150px;
     /* Jednotná maximální výška loga */
     object-fit: contain;
     margin-bottom: 10px;
